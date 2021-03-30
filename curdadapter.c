@@ -21,7 +21,7 @@ struct lnode {
 struct llist {
     struct lnode *head;
     int size;
-};
+}*ListPort;
 
 
 /* Functions that operate on llists */
@@ -129,8 +129,8 @@ int l_delete(struct llist *ls, void *item) {
 
 
 void create_adapter(){
-    struct llist *ListSwitch;
-    struct llist *ListPort;
+    static struct llist *ListSwitch;
+    //static struct llist *ListPort;
 
     ListSwitch = new_list();
     ListPort = new_list();
@@ -162,23 +162,29 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
         {
         case CRUD_PORT_ATTR_STATE:
             buff->istattribute.value.booldata = attr_list[i].value.booldata;
-            //buff.listattribute[freeElement]->value.booldata = attr_list->value.booldata;
             printf("create_object_chekTypePortObject_0: set Port type bool\n");
             chekTypePortObject = true;
             break;
         case CRUD_PORT_ATTR_SPEED:
-            //
-            printf("create_object_chekTypePortObject_1: set Port type\n");
+            if((attr_list[i].value.u32 == 10) || (attr_list[i].value.u32 == 100) || (attr_list[i].value.u32 == 1000)){
+                printf("create_object_chekTypePortObject_1: set Port type\n");
+                buff->istattribute.value.u32 = attr_list[i].value.u32;
+            }
             chekTypePortObject = true;
             break;
         case CRUD_PORT_ATTR_IPV4:
-            //buff.value.ip4 = attr_list->value.ip4;
-            printf("create_object_chekTypePortObject_2: set Port type\n");
+            if(true)
+            {
+                printf("create_object_chekTypePortObject_2: set Port type\n");
+                buff->istattribute.value.ip4 = attr_list[i].value.ip4;
+            }
             chekTypePortObject = true;
             break;
         case CRUD_PORT_ATTR_MTU:
-            printf("create_object_chekTypePortObject_3: set Port type\n");
-            //buff.value.u32 = attr_list->value.u32;
+            if((attr_list[i].value.u32 > 64) && (attr_list[i].value.u32 < 9000)){
+                printf("create_object_chekTypePortObject_3: set Port type\n");
+                buff->istattribute.value.u32 = attr_list[i].value.u32;
+            }
             chekTypePortObject = true;
             break;
 
@@ -204,6 +210,7 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
             break;
         }
     }
+
     if(chekTypeSwitchObject && chekTypePortObject)
     {
         printf("create_object _2: CRUD_INVALID_PARAM\n");
@@ -215,7 +222,7 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
 
     if(chekTypeSwitchObject)
     {
-        l_insert(ListSwitch, buff);
+        //l_insert(ListSwitch, buff);
         printf("create_object: set Swith type\n");
         second = 1;
     }
@@ -228,8 +235,25 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
     }
     
     //object_id = (first << 16) | second;
+    buff->count = 0;
+    buff->object_id = object_id;
     //printf("create_object: object_id = %p\n", *object_id);
     
     return 0;
 }
 
+
+
+crud_status_t delete_object(crud_object_id_t *object_id)
+{
+
+    uint16_t first_int;
+    first_int = *(object_id) & 0xffff;
+
+    if(false)
+        return 5;
+        
+    l_delete(ListPort, (void *) first_int);
+
+    return 0;
+}

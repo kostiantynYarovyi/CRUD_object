@@ -18,7 +18,9 @@ typedef enum
 
     CRUD_INVALID_PARAM,
 
-    CRUD_LIST_IS_FULL
+    CRUD_LIST_IS_FULL,
+
+    CRUD_PORT_IS_USED
 
     // add your own codes if needed 
 
@@ -62,17 +64,17 @@ typedef enum
 
     CRUD_PORT_ATTR_STATE,        //+ bool, read-write 
 
-    CRUD_PORT_ATTR_SPEED,        // uint32 [10, 100, 1000], read-write 
+    CRUD_PORT_ATTR_SPEED,        //+ uint32 [10, 100, 1000], read-write 
 
                                  // but write is allowed only if STATE 
 
                                  // is true 
 
-    CRUD_PORT_ATTR_IPV4,         // ip4_t, read-write any non-multicast  
+    CRUD_PORT_ATTR_IPV4,         //+- ip4_t, read-write any non-multicast  
 
                                                               // and non-broadcast 
 
-    CRUD_PORT_ATTR_MTU,          // uint32, [64..9K], read-only 
+    CRUD_PORT_ATTR_MTU,          //+ uint32, [64..9K], read-only 
 
 } crud_attr_id_t;
 
