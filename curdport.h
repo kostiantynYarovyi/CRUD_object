@@ -102,7 +102,7 @@ typedef union _sai_attribute_value_t
 
 
 
-typedef struct
+typedef struct 
 
 {
 
@@ -111,3 +111,4 @@ typedef struct
     crud_attr_value_t value;
 
 } crud_attribute_t;
+// 
