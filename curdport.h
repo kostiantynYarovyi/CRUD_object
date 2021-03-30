@@ -16,7 +16,9 @@ typedef enum
 
     CRUD_READ_ONLY,
 
-    CRUD_INVALID_PARAM
+    CRUD_INVALID_PARAM,
+
+    CRUD_LIST_IS_FULL
 
     // add your own codes if needed 
 
@@ -44,7 +46,7 @@ typedef enum
 
 {
 
-/*    // Switch attributes 
+    // Switch attributes 
 
     CRUD_SWITCH_ATTR_NAME,       // chardata,        read-write 
 
@@ -55,7 +57,7 @@ typedef enum
     CRUD_SWITCH_ATTR_MAX_PORTS,  // uint32 [1..32],  read-only 
 
 
-    */
+    
     // port attributes 
 
     CRUD_PORT_ATTR_STATE,        // bool, read-write 
