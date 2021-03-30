@@ -131,7 +131,7 @@ l_delete(struct llist *ls, void *item) {
  * main()
  * This test code is admittedly bogus.
  * ----------------------------------------------------------------- */
-/*int main() {
+int main() {
   struct llist *list;
   int i;
 
@@ -150,7 +150,7 @@ l_delete(struct llist *ls, void *item) {
   }
   l_delete(list, (void *) 21);
 }
-*/
+
 
 
 

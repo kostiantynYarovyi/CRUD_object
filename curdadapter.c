@@ -4,10 +4,12 @@
 
 
 struct object{
-    crud_attribute_t *listattribute[32];
+    crud_attribute_t istattribute;
     crud_object_id_t object_id;
     uint32_t count;
 };
+
+
 
 //####################################################################################3
 struct lnode {
@@ -18,7 +20,6 @@ struct lnode {
 /* The definition of what a llist (linked list) is.  */
 struct llist {
     struct lnode *head;
-    //struct object object;
     int size;
 };
 
@@ -127,74 +128,107 @@ int l_delete(struct llist *ls, void *item) {
 
 
 
+void create_adapter(){
+    struct llist *ListSwitch;
+    struct llist *ListPort;
+
+    ListSwitch = new_list();
+    ListPort = new_list();
+}
 
 
 
 
 crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, crud_object_id_t* object_id)
 {
+    printf("create_object: open\n");
     if (attr_count <= 0 || NULL == object_id || NULL == attr_list)
+    {
+        printf("create_object_1: attr_count = %d\n", attr_count);
+        printf("create_object_1: object_id = %p\n", object_id);
+        printf("create_object_1: attr_list = %p\n", attr_list);
+        printf("create_object_1: CRUD_INVALID_PARAM\n");
         return 3;
+    }
+        
 
     bool chekTypePortObject = false;
     bool chekTypeSwitchObject = false;
 
-   
-    
+    struct object* buff;
     for (uint32_t i = 0; i < attr_count; ++i) {
-        switch (attr_list->id)
+        
+        switch (attr_list[i].id)
         {
         case CRUD_PORT_ATTR_STATE:
+            buff->istattribute.value.booldata = attr_list[i].value.booldata;
             //buff.listattribute[freeElement]->value.booldata = attr_list->value.booldata;
+            printf("create_object_chekTypePortObject_0: set Port type bool\n");
             chekTypePortObject = true;
             break;
         case CRUD_PORT_ATTR_SPEED:
             //
+            printf("create_object_chekTypePortObject_1: set Port type\n");
             chekTypePortObject = true;
             break;
         case CRUD_PORT_ATTR_IPV4:
             //buff.value.ip4 = attr_list->value.ip4;
+            printf("create_object_chekTypePortObject_2: set Port type\n");
             chekTypePortObject = true;
             break;
         case CRUD_PORT_ATTR_MTU:
+            printf("create_object_chekTypePortObject_3: set Port type\n");
             //buff.value.u32 = attr_list->value.u32;
             chekTypePortObject = true;
             break;
 
         case CRUD_SWITCH_ATTR_NAME:
-            //strcpy(buff.value.chardata, attr_list->value.chardata);
+            printf("create_object_chekTypeSwitchObject_4: set Switch type name\n");
+            strcpy(buff->istattribute.value.chardata, attr_list[i].value.chardata);
             chekTypeSwitchObject = true;
             break;
         case CRUD_SWITCH_ATTR_HASH_SEED:
-            //strcpy(buff.value.chardata, attr_list->value.chardata);
+            printf("create_object_chekTypeSwitchObject_5: set Switch type\n");
+            buff->istattribute.value.u32 = attr_list[i].value.u32;
             chekTypeSwitchObject = true;
             break;
         case CRUD_SWITCH_ATTR_SPLIT_MODE:
+            printf("create_object_chekTypeSwitchObject_6: set Switch type\n");
             //buff.value.ip4 = attr_list->value.ip4;
             chekTypeSwitchObject = true;
             break;
         case CRUD_SWITCH_ATTR_MAX_PORTS:
+            printf("create_object_chekTypeSwitchObject_7: set Switch type\n");
             //buff.value.u32 = attr_list->value.u32;
             chekTypeSwitchObject = true;
             break;
         }
     }
     if(chekTypeSwitchObject && chekTypePortObject)
+    {
+        printf("create_object _2: CRUD_INVALID_PARAM\n");
         return 3;
+    }
+        
     
     uint16_t first, second = 0;
 
     if(chekTypeSwitchObject)
     {
+        l_insert(ListSwitch, buff);
+        printf("create_object: set Swith type\n");
         second = 1;
     }
 
     if(chekTypePortObject)
     {
+        l_insert(ListPort, buff);
+        printf("create_object: set Port type\n");
         second = 2;
     }
     
-    object_id = (first << 16) | second;
+    //object_id = (first << 16) | second;
+    //printf("create_object: object_id = %p\n", *object_id);
     
     return 0;
 }

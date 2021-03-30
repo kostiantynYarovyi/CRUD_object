@@ -48,9 +48,9 @@ typedef enum
 
     // Switch attributes 
 
-    CRUD_SWITCH_ATTR_NAME,       // chardata,        read-write 
+    CRUD_SWITCH_ATTR_NAME,       //+ chardata,        read-write 
 
-    CRUD_SWITCH_ATTR_HASH_SEED,  // uint32 [0..max], read-write 
+    CRUD_SWITCH_ATTR_HASH_SEED,  //+ uint32 [0..max], read-write 
 
     CRUD_SWITCH_ATTR_SPLIT_MODE, // uint32 [0..3],   read-only   
 
@@ -60,7 +60,7 @@ typedef enum
     
     // port attributes 
 
-    CRUD_PORT_ATTR_STATE,        // bool, read-write 
+    CRUD_PORT_ATTR_STATE,        //+ bool, read-write 
 
     CRUD_PORT_ATTR_SPEED,        // uint32 [10, 100, 1000], read-write 
 
