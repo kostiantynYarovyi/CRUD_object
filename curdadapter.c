@@ -234,11 +234,30 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
         second = 2;
     }
     
-    //object_id = (first << 16) | second;
+    *object_id = (first << 16) | second;
     buff->count = 0;
     buff->object_id = object_id;
     //printf("create_object: object_id = %p\n", *object_id);
     
+    return 0;
+}
+
+crud_status_t read_object(crud_object_id_t *object_id, crud_attribute_t* attr_list, uint32_t attr_count){
+    printf("create_object: open\n");
+    if (attr_count <= 0 || NULL == object_id || NULL == attr_list)
+    {
+        printf("create_object_1: attr_count = %d\n", attr_count);
+        printf("create_object_1: object_id = %p\n", object_id);
+        printf("create_object_1: attr_list = %p\n", attr_list);
+        printf("create_object_1: CRUD_INVALID_PARAM\n");
+        return 3;
+    }
+
+    for (uint32_t i = 0; i < attr_count; ++i) {
+        
+        
+    }
+
     return 0;
 }
 
@@ -252,7 +271,7 @@ crud_status_t delete_object(crud_object_id_t *object_id)
 
     if(false)
         return 5;
-        
+
     l_delete(ListPort, (void *) first_int);
 
     return 0;
