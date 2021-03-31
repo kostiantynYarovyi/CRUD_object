@@ -1,3 +1,5 @@
+#if !defined (__CRUDATTRIBUTE_H_)
+#define __CRUDATTRIBUTE_H_
 
 #include <stdbool.h>
 
@@ -20,7 +22,9 @@ typedef enum
 
     CRUD_LIST_IS_FULL,
 
-    CRUD_PORT_IS_USED
+    CRUD_PORT_IS_USED,
+
+    CRUD_LIST_IS_ABSENT
 
     // add your own codes if needed 
 
@@ -114,3 +118,4 @@ typedef struct
 
 } crud_attribute_t;
 // 
+#endif
