@@ -20,7 +20,7 @@ struct lobject* get_list_object(){
 
 
 
-uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attribute_t listattribute){
+uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attribute_t* listattribute){
     uint32_t object_id = 0;
     uint16_t id = 0;
     struct lnode* node = (struct lnode*)malloc(sizeof(struct lnode));
@@ -38,7 +38,7 @@ uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attr
         node->next = NULL;
         node->count = 0;
         node->object_type = object_type;
-        node->listattribute = listattribute;
+        node->listattribute = *listattribute;
         node->object_id = id;
         newList->size++;
 
@@ -51,7 +51,7 @@ uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attr
     return object_id;
 }
 
-struct lnode* get_node(const crud_object_id_t object_id){
+struct lnode* get_node(struct lobject* newList, const crud_object_id_t object_id){
     if(newList){
        struct lnode* current =  newList->head;
 
@@ -67,7 +67,7 @@ struct lnode* get_node(const crud_object_id_t object_id){
     return 0;
 }
 
-crud_status_t delete_node(const crud_object_id_t object_id){
+crud_status_t delete_node(struct lobject* newList, const crud_object_id_t object_id){
     if(newList){
         struct lnode* current =  newList->head;
         

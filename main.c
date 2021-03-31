@@ -1,9 +1,15 @@
 
-
+#include "sdk_list.h"
 
 int main()
 {
 
+    crud_attribute_t attr_list[2];
+    attr_list[0].id = 2;
+    attr_list[1].id = 5;
+    crud_attribute_t* attr_list_1 = attr_list[2];
+    struct lobject* list = create_list_object();
+    //add_node(list, 2, attr_list_1);
  /*   crud_attribute_t attr_list[2];
     attr_list[0].id = 2;
     attr_list[1].id = 5;

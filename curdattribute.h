@@ -24,7 +24,9 @@ typedef enum
 
     CRUD_PORT_IS_USED,
 
-    CRUD_LIST_IS_ABSENT
+    CRUD_LIST_IS_ABSENT,
+
+    CRUD_CREATE_OBJ_FAILED
 
     // add your own codes if needed 
 
