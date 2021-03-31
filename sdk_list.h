@@ -8,7 +8,7 @@
 
 struct lnode {
     struct lnode *next;
-    crud_attribute_t listattribute;
+    crud_attribute_t* listattribute;
     uint16_t object_id;
     uint16_t object_type;
     uint32_t count;
