@@ -1,10 +1,10 @@
 #include "sdk_api.h"
-#include "crud_api.h"
+
 
 
 crud_object_id_t check_type_object(crud_attribute_t attr_list){
     bool chekTypeSwitchObject, chekTypePortObject = false;
-        printf("check_type_object: \n");
+        //printf("check_type_object: \n");
         switch (attr_list.id)
         {
         case CRUD_SWITCH_ATTR_NAME:
@@ -53,22 +53,32 @@ crud_object_id_t check_type_object(crud_attribute_t attr_list){
 }
 
 
+crud_object_id_t check_invalid_type_object(crud_attribute_t* attr_list, uint32_t attr_count){
+    for (uint32_t i = 0; i < attr_count; ++i) {
+        if(attr_list[i].id < 0 ||attr_list[i].id > 7 )
+            return 0;
+    }
+    return 1;
+}
 
 crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, crud_object_id_t* object_id){
-    printf("create_object:\n");
+    //printf("create_object:\n");
+    if(check_invalid_type_object(attr_list, attr_count) == 0){
+        printf("create_object: CRUD_OBJECT_TYPE_INVALID \n");
+        return 3;
+    }
+        
+
     for (uint32_t i = 0; i < attr_count; ++i) {
         crud_object_id_t type_object = check_type_object(attr_list[i]);
-        if(type_object == 0){
-            printf("create_object: CRUD_OBJECT_TYPE_INVALID \n");
-        }
         if(type_object == 1){
             printf("create_object:Type is SWITCH \n");
-            create_switch_object(attr_list[i], object_id);
+            //create_switch_object(attr_list[i], object_id);
         }
         if(type_object == 2){
 
             printf("create_object:Type is PORT \n");
-            create_port_object(attr_list[i], object_id);
+            create_port_object(attr_list[i],type_object ,object_id);
         }
     }
     return 0;

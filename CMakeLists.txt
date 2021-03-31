@@ -4,4 +4,4 @@ cmake_minimum_required(VERSION 3.10)
 project(Test)
 
 # add the executable
-add_executable(Test sdk_list.c sdk_api.c main.c)
+add_executable(Test sdk_list.c sdk_api.c crud_api.c main.c)

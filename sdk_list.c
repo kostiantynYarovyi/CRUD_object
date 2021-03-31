@@ -1,30 +1,46 @@
 
 #include "sdk_list.h"
 
-struct lobject* newList;
 
-struct lobject* create_list_object(){
+
+struct lobject* create_list_port_object(){
     printf("create_list_object\n");
-    newList = (struct lobject*) malloc(sizeof(struct lobject));
-    if(newList){
-        newList->size = 0;
-        newList->head = NULL;
+    list_port_object = (struct lobject*) malloc(sizeof(struct lobject));
+    if(list_port_object){
+        list_port_object->size = 0;
+        list_port_object->head = NULL;
         printf("create_list_object:  create object \n");
-        return newList;
+        return list_port_object;
+    }
+    printf("create_list_object: return 0 \n");
+    return 0;
+}
+
+struct lobject* create_list_swirch_object(){
+    printf("create_list_object\n");
+    list_switch_object = (struct lobject*) malloc(sizeof(struct lobject));
+    if(list_switch_object){
+        list_switch_object->size = 0;
+        list_switch_object->head = NULL;
+        printf("create_list_object:  create object \n");
+        return list_switch_object;
     }
     printf("create_list_object: return 0 \n");
     return 0;
 }
  
 
-struct lobject* get_list_object(){
+struct lobject* get_list_port_object(){
     printf("get_list_object\n");
-    return newList;
+    return list_switch_object;
 }
 
+struct lobject* get_list_swirch_object(){
+    printf("get_list_object\n");
+    return list_port_object;
+}
 
-
-uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attribute_t* listattribute){
+uint32_t add_node(struct lobject* List, const uint16_t object_type, crud_attribute_t* listattribute){
     printf("add_node\n");
     uint32_t object_id = 0;
     uint16_t id = 0;
@@ -33,8 +49,8 @@ uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attr
     if(node)
     {
         printf("add_node: IF NODE\n");
-        struct lnode* current = newList;
-        printf("add_node: newList->head: %p \n", newList);
+        struct lnode* current = List;
+        printf("add_node: newList->head: %p \n", List);
         while (current->next != NULL)
         {
             printf("add_node: current->next != NULL\n");
@@ -47,7 +63,7 @@ uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attr
         node->object_type = object_type;
         node->listattribute = listattribute;
         node->object_id = id;
-        newList->size++;
+        List->size++;
 
         current->next = node;
         object_id = (object_type << 16) | id;
@@ -58,9 +74,9 @@ uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attr
     return object_id;
 }
 
-struct lnode* get_node(struct lobject* newList, const crud_object_id_t object_id){
-    if(newList){
-       struct lnode* current =  newList->head;
+struct lnode* get_node(struct lobject* List, const crud_object_id_t object_id){
+    if(List){
+       struct lnode* current =  List->head;
 
         uint16_t id = object_id &0xffff;
         while(current->next != NULL){   
@@ -74,9 +90,9 @@ struct lnode* get_node(struct lobject* newList, const crud_object_id_t object_id
     return 0;
 }
 
-crud_status_t delete_node(struct lobject* newList, const crud_object_id_t object_id){
-    if(newList){
-        struct lnode* current =  newList->head;
+crud_status_t delete_node(struct lobject* List, const crud_object_id_t object_id){
+    if(List){
+        struct lnode* current =  List->head;
         
         uint16_t id = object_id &0xffff;
         while(current->next != NULL){
