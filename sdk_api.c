@@ -2,6 +2,12 @@
 #include "sdk_list.h"
 
 
+struct lobject* get_list_switch_object(); 
+
+struct lobject* get_list_port_object();
+
+crud_status_t delete_node(struct lobject* newList, const crud_object_id_t object_id);
+
 crud_object_id_t check_type_object(crud_attribute_t* attr_list, uint32_t attr_count){
     bool chekTypeSwitchObject, chekTypePortObject, chekTypeInvalidObject  = false;
     printf("check_type_object: \n");
@@ -89,4 +95,25 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
     }
     
     return 0;
+}
+
+crud_status_t read_object(crud_object_id_t *object_id, crud_attribute_t* attr_list, uint32_t attr_count){
+    if(object_id && attr_list && attr_count > 0)
+    {
+
+        return 0;
+    }
+    return CRUD_INVALID_PARAM;
+}
+
+crud_status_t delete_object(crud_object_id_t *object_id){
+
+    uint16_t type = (*object_id >> 16) & 0xffff;
+    if(type == 1)
+        return delete_node( get_list_switch_object(), *object_id);    
+
+    if(type == 2)
+        return delete_node(get_list_port_object(), *object_id);
+
+    return 1;
 }

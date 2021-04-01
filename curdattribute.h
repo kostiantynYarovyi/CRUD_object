@@ -26,7 +26,11 @@ typedef enum
 
     CRUD_LIST_IS_ABSENT,
 
-    CRUD_CREATE_OBJ_FAILED
+    CRUD_CREATE_OBJ_FAILED,
+
+    CRUD_NODE_IS_ABSENT
+
+
 
     // add your own codes if needed 
 
@@ -69,6 +73,7 @@ typedef enum
     // port attributes 
 
     CRUD_PORT_ATTR_STATE,        //+ bool, read-write 
+
 
     CRUD_PORT_ATTR_SPEED,        //+ uint32 [10, 100, 1000], read-write 
 

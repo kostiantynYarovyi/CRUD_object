@@ -10,6 +10,7 @@ struct lobject* create_list_port_object(){
     if(list_port_object){
         list_port_object->size = 0;
         list_port_object->head = 0;
+        list_port_object->count_id = 0;
         printf("create_list_port_object:  create object \n");
         return list_port_object;
     }
@@ -22,7 +23,8 @@ struct lobject* create_list_swirch_object(){
     list_switch_object = (struct lobject*) malloc(sizeof(struct lobject));
     if(list_switch_object){
         list_switch_object->size = 0;
-        list_switch_object->head = NULL;
+        list_switch_object->head = 0;
+        list_switch_object->count_id = 0;
         printf("create_list_swirch_object:  create object \n");
         return list_switch_object;
     }
@@ -32,12 +34,12 @@ struct lobject* create_list_swirch_object(){
  
 
 struct lobject* get_list_port_object(){
-    printf("get_list_port_object\n");
+    //printf("get_list_port_object\n");
     return list_port_object;
 }
 
 struct lobject* get_list_switch_object(){
-    printf("get_list_swirch_object\n");
+    //printf("get_list_swirch_object\n");
     return list_switch_object;
 }
 
@@ -60,6 +62,7 @@ uint32_t add_node(struct lobject* List, const uint16_t object_type, crud_attribu
         node->next = List->head;
 		List->head = node;
         List->size++;
+        List->count_id++;
 		
         //printf("add_node: List->head = NODE CHECK: %p \n", List->head);
         //printf("add_node: List->head = NODE CHECK: %p \n", List->head);
@@ -89,21 +92,47 @@ struct lnode* get_node(struct lobject* List, const crud_object_id_t object_id){
 
 crud_status_t delete_node(struct lobject* List, const crud_object_id_t object_id){
     if(List){
-        struct lnode* current =  List->head;
+        printf("delete_node\n");
+        struct lnode* node;
+        struct lnode* prev;
+
+        printf("delete_node: object_id =  %d \n", object_id);
+
+        for (node = List->head; (node != 0 && node->object_id != object_id); node = node->next)
+	    {
+            printf("delete_node: node->object_id %d \n", node->object_id);
+		    prev = node;
+	    }
+
+        if (node == 0)
+	    {
+		    printf("node is not found");
+		    return CRUD_NODE_IS_ABSENT;
+	    }
         
-        uint16_t id = object_id &0xffff;
-        while(current->next != NULL){
-            if(current->next->object_id == object_id)
+        if (prev)
+        {
+            printf("delete_node: prev \n");
+            if (node == List->head) 
             {
-                struct lnode* buff = current->next;
-                free(buff);
-                current->next = current->next->next;
-                break;
+                printf("delete_node: node == List->head \n");
+                List->head = node->next;
+            } 
+            else 
+            {
+                printf("delete_node: else \n");
+                prev->next = node->next;
             }
-            current = current->next;        
+            free(node);
+            List->size--;
+            return 0;
         }
-        return 0;
+        return CRUD_STATUS_FAILURE;
     }
     printf("delete_node: fail List is absetn\n");
-    return 6;
+    return CRUD_LIST_IS_ABSENT;
+}
+
+uint32_t get_list_size(struct lobject* List){
+    return List->size;
 }

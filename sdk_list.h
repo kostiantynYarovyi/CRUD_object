@@ -17,7 +17,8 @@ struct lnode {
 
 struct lobject {
     struct lnode *head;
-    int size;
+    uint32_t size;
+    uint32_t count_id;
 };
 
 
@@ -30,6 +31,8 @@ struct lobject* create_list_port_object();
 struct lobject* get_list_switch_object(); 
 
 struct lobject* get_list_port_object();
+
+uint32_t get_list_size(struct lobject* List);
 
 
 uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attribute_t* listattribute);
