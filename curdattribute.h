@@ -28,7 +28,13 @@ typedef enum
 
     CRUD_CREATE_OBJ_FAILED,
 
-    CRUD_NODE_IS_ABSENT
+    CRUD_NODE_IS_ABSENT,
+
+    CRUD_ATTRIBUTE_LIST_IS_EMPTY,
+
+    CRUD_ATTRIBUTE_SPEED_INCORRECT,
+
+     CRUD_ATTRIBUTE_SPEED_IPV4_MULTICAST
 
 
 
@@ -72,20 +78,20 @@ typedef enum
     
     // port attributes 
 
-    CRUD_PORT_ATTR_STATE,        //+ bool, read-write 
+    CRUD_PORT_ATTR_STATE,        // bool, read-write 
 
 
-    CRUD_PORT_ATTR_SPEED,        //+ uint32 [10, 100, 1000], read-write 
+    CRUD_PORT_ATTR_SPEED,        // uint32 [10, 100, 1000], read-write 
 
                                  // but write is allowed only if STATE 
 
                                  // is true 
 
-    CRUD_PORT_ATTR_IPV4,         //+- ip4_t, read-write any non-multicast  
+    CRUD_PORT_ATTR_IPV4,         // ip4_t, read-write any non-multicast  
 
                                                               // and non-broadcast 
 
-    CRUD_PORT_ATTR_MTU,          //+ uint32, [64..9K], read-only 
+    CRUD_PORT_ATTR_MTU,          // uint32, [64..9K], read-only 
 
 } crud_attr_id_t;
 

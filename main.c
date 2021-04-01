@@ -32,6 +32,7 @@ int main()
     //struct lobject* list = create_list_object();
     printf("####################################################\n");
 
+    /*
     printf("object_id_1: %u \n", object_id_1);
     printf("object_id_2: %u \n", object_id_2);
     printf("object_id_3: %u \n", object_id_3);
@@ -40,7 +41,7 @@ int main()
     delete_object(&object_id_3);
     printf(" list port size: %u \n", get_list_size(get_list_port_object()));
 
-    
+    */
     //printf("get_list_port_object()_1: %u \n", get_list_port_object()->head->object_id);
     /*struct lnode* node =  get_node(get_list_port_object(),0);
    
