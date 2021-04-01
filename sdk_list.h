@@ -18,7 +18,7 @@ struct lnode {
 struct lobject {
     struct lnode *head;
     int size;
-}*list_port_object, *list_switch_object;
+};
 
 
 
@@ -27,7 +27,7 @@ struct lobject* create_list_swirch_object();
 
 struct lobject* create_list_port_object();
 
-struct lobject* get_list_swirch_object(); 
+struct lobject* get_list_switch_object(); 
 
 struct lobject* get_list_port_object();
 

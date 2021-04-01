@@ -2,11 +2,17 @@
 #include "sdk_list.h"
 #include "sdk_api.h"
 
+crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, crud_object_id_t* object_id);
+
 int main()
 {
-
-    crud_object_id_t* object_id = 0;
-    uint32_t attr_count = 10;
+    crud_object_id_t object_id_1 = 0;
+    crud_object_id_t object_id_2 = 0;
+    crud_object_id_t object_id_3 = 0;
+        
+    //printf("object: %u \n", object_id);
+    printf("####################################################\n");
+    uint32_t attr_count = 2;
     uint32_t test = 4;
     crud_attribute_t attr_list[attr_count];
     for (uint32_t i = 0; i < attr_count; ++i)
@@ -15,10 +21,18 @@ int main()
         attr_list[i].value.u32 = i + test;
     }
 //####################################################
-    create_object(attr_list, attr_count, object_id);
+    create_object(attr_list, attr_count, &object_id_1);
+    printf("\n\n\n\n");
+    create_object(attr_list, attr_count, &object_id_2);
+    printf("\n\n\n\n");
+    create_object(attr_list, attr_count, &object_id_3);
     //crud_attribute_t* attr_list_1 = attr_list[2];
     //struct lobject* list = create_list_object();
-    printf("object: %d \n", attr_count);
+    printf("####################################################\n");
+
+    printf("object_id_1: %u \n", object_id_1);
+    printf("object_id_2: %u \n", object_id_2);
+    printf("object_id_3: %u \n", object_id_3);
     //add_node(list, 2, attr_list);
     //add_node(list, 2,attr_list[0]);
 
