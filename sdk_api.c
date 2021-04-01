@@ -6,7 +6,6 @@ struct lobject* get_list_switch_object();
 
 struct lobject* get_list_port_object();
 
-
 crud_status_t read_port_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count);
 
 crud_status_t read_switch_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count);
@@ -68,7 +67,6 @@ crud_object_id_t check_type_object(crud_attribute_t* attr_list, uint32_t attr_co
     return 0;
 }
 
-
 crud_object_id_t check_invalid_type_object(crud_attribute_t* attr_list, uint32_t attr_count){
     for (uint32_t i = 0; i < attr_count; ++i) {
         if(attr_list[i].id < 0 ||attr_list[i].id > 7 )
@@ -93,12 +91,12 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
         return CRUD_INVALID_PARAM;
     }
     if(type_object == 1){    
-        return create_switch_object(attr_list, type_object, object_id);
+        return create_switch_object(attr_list, type_object, object_id, attr_count);
         //printf("create_object:Type is SWITCH; start creating \n");
         //printf("===========================================\n");
     }
     if(type_object == 2){
-        return create_port_object(attr_list, type_object, object_id);
+        return create_port_object(attr_list, type_object, object_id, attr_count);
         //printf("create_object:Type is PORT; start creating: object=  %u \n", *object_id);
         //printf("===========================================\n");
     }
@@ -120,7 +118,7 @@ crud_status_t read_object(crud_object_id_t *object_id, crud_attribute_t* attr_li
     }
 
     if(type_object == 1){    
-        //return read_switch_object(attr_list, type_object, object_id);
+        return read_switch_object(object_id, attr_list, attr_count);
     }
 
     if(type_object == 2){
