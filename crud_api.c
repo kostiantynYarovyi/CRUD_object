@@ -1,4 +1,5 @@
 #include "crud_api.h"
+#include "sdk_list.h"
 
 crud_status_t create_port_object(crud_attribute_t attr_list, uint16_t object_type, crud_object_id_t* object_id){
     printf("create_port_object:\n");
@@ -7,9 +8,10 @@ crud_status_t create_port_object(crud_attribute_t attr_list, uint16_t object_typ
     struct lobject* object_list = get_list_port_object();
     if (object_list == 0)
     {
-        object_list = create_list();
+        object_list = create_list_port_object();
     }
-    uint32_t id = add_node(object_list, object_type, attr_list);
+    uint32_t id = 0;
+    //uint32_t id = add_node(object_list, object_type, attr_list);
     return id;
 }
 

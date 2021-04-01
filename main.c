@@ -6,12 +6,13 @@ int main()
 {
 
     crud_object_id_t* object_id = 0;
-    uint32_t attr_count = 1;
+    uint32_t attr_count = 10;
+    uint32_t test = 4;
     crud_attribute_t attr_list[attr_count];
     for (uint32_t i = 0; i < attr_count; ++i)
     {
-        attr_list[i].id = i + 4;
-        attr_list[i].value.u32 = i + 4;
+        attr_list[i].id = i + test;
+        attr_list[i].value.u32 = i + test;
     }
 //####################################################
     create_object(attr_list, attr_count, object_id);
