@@ -80,6 +80,7 @@ struct lnode* get_node(struct lobject* List, const crud_object_id_t object_id){
                 return current;
             current = current->next;
         }
+        printf("get_node: fail List out of range\n");
         return 0;
     }
     printf("get_node: fail List is absetn\n");
