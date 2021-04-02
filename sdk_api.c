@@ -104,8 +104,8 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
     }
     if(type_object == 2){
         return create_port_object(attr_list, type_object, object_id, attr_count);
-        //printf("create_object:Type is PORT; start creating: object=  %u \n", *object_id);
-        //printf("===========================================\n");
+        printf("create_object:Type is PORT; start creating: object=  %u \n", *object_id);
+        printf("===========================================\n");
     }
     
     return CRUD_STATUS_FAILURE;
