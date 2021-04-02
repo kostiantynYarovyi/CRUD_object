@@ -60,7 +60,7 @@ crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_ty
 }
 
 crud_status_t create_switch_object(crud_attribute_t* attr_list,  uint16_t object_type, crud_object_id_t* object_id, uint32_t attr_count){
-    return 0;
+    return 1;
 }
 
 
@@ -108,7 +108,48 @@ crud_status_t read_port_object(crud_object_id_t* object_id, crud_attribute_t* at
 }
 
 crud_status_t read_switch_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count){
+    return 1;
+}
+
+crud_status_t update_port_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count){
+    struct lnode*  node =  get_node(get_list_port_object(), *object_id);
+    for (uint32_t i = 0; i < attr_count; ++i){
+        switch (attr_list[i].id)
+        {
+        case CRUD_PORT_ATTR_STATE:
+            //printf("crud_api____read_port_object_0:\n");
+            node->listattribute[i].value.booldata = attr_list[i].value.booldata;
+            break;
+
+        case CRUD_PORT_ATTR_SPEED:
+            //printf("crud_api____read_port_object_1:\n");
+            if(check_crud_port_attr_speed(attr_list[i].value) && get_crud_port_attr_state(node->listattribute[i].value)){
+                //printf("crud_api____read_port_object_1: CRUD_ATTRIBUTE_SPEED_INCORRECT\n");
+                return CRUD_ATTRIBUTE_SPEED_INCORRECT;
+            }
+            node->listattribute[i].value.u32 = attr_list[i].value.u32;
+            break;
+
+        case CRUD_PORT_ATTR_IPV4:
+            //printf("crud_api____read_port_object_2:\n");
+            if (check_crud_port_attr_ipv4(attr_list[i].value)){
+                //printf("crud_api____read_port_object: CRUD_ATTRIBUTE_IPV4_MULTICAST\n");
+                return CRUD_ATTRIBUTE_IPV4_MULTICAST;
+            }
+            node->listattribute[i].value.ip4 = attr_list[i].value.ip4;
+            break;
+
+        case CRUD_PORT_ATTR_MTU:
+            printf("crud_api____read_port_object: CRUD_ATTRIBUTE_MTU_ONLY_READ\n");
+            return CRUD_ATTRIBUTE_MTU_ONLY_READ;
+            break;
+        }
+    }
     return 0;
+}
+
+crud_status_t update_switch_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count){
+    return 1;
 }
 
 bool get_crud_port_attr_state(union _sai_attribute_value_t state){

@@ -6,6 +6,8 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
 
 crud_status_t read_object(crud_object_id_t *object_id, crud_attribute_t* attr_list, uint32_t attr_count);
 
+crud_status_t update_object(crud_object_id_t *object_id, crud_attribute_t* attr_list, uint32_t attr_count);
+
 crud_status_t delete_object(crud_object_id_t *object_id);
 
 int main()
@@ -32,13 +34,16 @@ int main()
 printf("####################################################\n");
     buff = create_object(attr_list, attr_count, &object_id_1);
     //printf("\n\n\n\n");
-     printf("buff == : %u \n", buff);
-printf("####################################################\n");
-/*
-    create_object(attr_list, attr_count, &object_id_2);
-    //printf("\n\n\n\n");
-    create_object(attr_list, attr_count, &object_id_3);
+     
 
+
+    //buff = create_object(attr_list, attr_count, &object_id_2);
+    //printf("\n\n\n\n");
+   //buff = create_object(attr_list, attr_count, &object_id_3);
+    printf("buff == : %u \n", buff);
+    printf("####################################################\n");
+
+/*
     printf("object_id_1: %u \n",  attr_list[0].value.u32);
     printf("object_id_2: %u \n",  attr_list[1].value.ip4);
     printf("object_id_3: %u \n",  attr_list[2].value.u32);

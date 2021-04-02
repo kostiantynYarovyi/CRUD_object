@@ -6,6 +6,8 @@ struct lobject* get_list_switch_object();
 
 struct lobject* get_list_port_object();
 
+uint32_t get_list_size(struct lobject* List);
+
 crud_status_t read_port_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count);
 
 crud_status_t read_switch_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count);
@@ -77,9 +79,14 @@ crud_object_id_t check_invalid_type_object(crud_attribute_t* attr_list, uint32_t
 
 crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, crud_object_id_t* object_id){
     //printf("===========================================\n");
-    
     printf("sdk_api___create_object: ");
-    if(object_id == 0 || attr_list == 0 || attr_count < 0)
+    if(get_list_port_object() && (get_list_size(get_list_port_object()) >= 32)){
+        printf("sdk_api___create_object: CRUD_PORT_LIST_IS_FULL \n");
+        return CRUD_PORT_LIST_IS_FULL;
+    }
+
+    
+    if(!object_id || !attr_list || attr_count < 0)
         return CRUD_INVALID_PARAM;
 
     if(attr_count == 0)
@@ -105,7 +112,7 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
 }
 
 crud_status_t read_object(crud_object_id_t *object_id, crud_attribute_t* attr_list, uint32_t attr_count){
-    if(object_id == 0 || attr_list == 0 || attr_count < 0)
+    if(!object_id || !attr_list || attr_count < 0)
         return CRUD_INVALID_PARAM;
 
     if(attr_count == 0)
@@ -128,8 +135,32 @@ crud_status_t read_object(crud_object_id_t *object_id, crud_attribute_t* attr_li
     return CRUD_STATUS_FAILURE;
 }
 
+crud_status_t update_object(crud_object_id_t *object_id, crud_attribute_t* attr_list, uint32_t attr_count){
+    if(!object_id || !attr_list|| attr_count < 0)
+        return CRUD_INVALID_PARAM;
+
+    if(attr_count == 0)
+        return CRUD_ATTRIBUTE_LIST_IS_EMPTY;
+
+        crud_object_id_t type_object = check_type_object(attr_list, attr_count);
+    if(type_object == 0){
+        printf("sdk_api_create_object: CRUD_INVALID_PARAM \n");
+        return CRUD_INVALID_PARAM;
+    }
+
+    if(type_object == 1){    
+        return update_switch_object(object_id, attr_list, attr_count);
+    }
+
+    if(type_object == 2){
+        return update_port_object(object_id, attr_list, attr_count);
+    }
+
+    return CRUD_STATUS_FAILURE;
+}
+
 crud_status_t delete_object(crud_object_id_t *object_id){
-    if(object_id == 0)
+    if(!object_id)
         return CRUD_INVALID_PARAM;
 
     uint16_t type = (*object_id >> 16) & 0xffff;
