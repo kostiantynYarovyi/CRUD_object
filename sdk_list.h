@@ -19,6 +19,7 @@ struct lobject {
     struct lnode *head;
     uint32_t size;
     uint32_t count_id;
+    int state;
 };
 
 
@@ -42,5 +43,7 @@ struct lnode* get_node(struct lobject* List, const crud_object_id_t object_id);
 bool get_attr_node(struct lnode* node, const  uint32_t id, uint32_t* get_id);
 
 crud_status_t delete_node(struct lobject* List, const crud_object_id_t object_id);
+
+void add_new_attr(struct lnode* node,  crud_attribute_t attr);
 
 #endif

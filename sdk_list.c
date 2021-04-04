@@ -3,6 +3,7 @@
 
 struct lobject* list_port_object; 
 struct lobject* list_switch_object;
+int get_attr_node_state(struct lnode* node);
 
 struct lobject* create_list_port_object(){
     list_port_object = (struct lobject*) malloc(sizeof(struct lobject));
@@ -56,6 +57,7 @@ uint32_t add_node(struct lobject* List, const uint16_t object_type, crud_attribu
         node->object_id = List->size;
         
         node->next = List->head;
+        List->state = get_attr_node_state(node);
 		List->head = node;
         List->size++;
         List->count_id++;
@@ -130,4 +132,19 @@ bool get_attr_node(struct lnode* node, const  uint32_t id, uint32_t* get_id){
         }
     }
     return false;
+}
+
+int get_attr_node_state(struct lnode* node){
+    for(uint32_t i = 0; i < node->countAttr; i++){
+        if(node->listattribute[i].id == CRUD_PORT_ATTR_STATE)
+            return node->listattribute[i].value.booldata;
+    }
+    return -1;
+}
+
+
+void add_new_attr(struct lnode* node,  crud_attribute_t attr){
+    printf("add_new_attr\n");
+    node->listattribute[node->countAttr].id = attr.id;
+    node->listattribute[node->countAttr].value = attr.value;
 }
