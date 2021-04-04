@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "sdk_api.h": "c",
-        "curdattribute.h": "c"
-    }
-}

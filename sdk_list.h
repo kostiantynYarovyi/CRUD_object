@@ -11,7 +11,7 @@ struct lnode {
     crud_attribute_t* listattribute;
     uint16_t object_id;
     uint16_t object_type;
-    uint32_t count;
+    uint32_t countAttr;
 };  
 
 
@@ -35,10 +35,12 @@ struct lobject* get_list_port_object();
 uint32_t get_list_size(struct lobject* List);
 
 
-uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attribute_t* listattribute);
+uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attribute_t* listattribute, uint32_t attr_count);
 
-struct lnode* get_node(struct lobject* newList, const crud_object_id_t object_id);
+struct lnode* get_node(struct lobject* List, const crud_object_id_t object_id);
 
-crud_status_t delete_node(struct lobject* newList, const crud_object_id_t object_id);
+bool get_attr_node(struct lnode* node, const  uint32_t id, uint32_t* get_id);
+
+crud_status_t delete_node(struct lobject* List, const crud_object_id_t object_id);
 
 #endif
