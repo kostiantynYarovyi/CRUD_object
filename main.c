@@ -1,6 +1,8 @@
 
+#include <assert.h>
 #include "sdk_list.h"
 #include "sdk_api.h"
+
 
 crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, crud_object_id_t* object_id);
 
@@ -10,6 +12,149 @@ crud_status_t update_object(crud_object_id_t *object_id, crud_attribute_t* attr_
 
 crud_status_t delete_object(crud_object_id_t *object_id);
 
+#define PORT // SWITCH
+int main(void)
+{
+#ifdef PORT
+    crud_attribute_t attr_list[10];
+    crud_object_id_t port_oid[33] = {0};
+    attr_list[0].id = CRUD_PORT_ATTR_STATE;
+    attr_list[0].value.booldata = true;
+    attr_list[1].id = CRUD_PORT_ATTR_SPEED;
+    attr_list[1].value.u32 = 1000;
+    attr_list[2].id = CRUD_PORT_ATTR_IPV4;
+    attr_list[2].value.ip4 = 0x11223344;
+    attr_list[3].id = CRUD_PORT_ATTR_MTU;
+    attr_list[3].value.u32 = 100;
+    // valid create
+    for (int i = 0; i < 32; i++) { 
+        assert(create_object(&attr_list, i % 4 + 1, &port_oid[i]) == CRUD_STATUS_SUCCESS);
+        assert(((uint32_t) port_oid[i]) >> 16 == CRUD_OBJECT_TYPE_PORT);
+        printf("Created port %02d, OID: %08X\n", i, port_oid[i]);
+    }
+    // invalid create 33
+    port_oid[32] = 0;
+    assert(create_object(&attr_list, 4, &port_oid[32]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[32] == 0);
+    // valid remove
+    for (int i = 0; i < 32; i++) { 
+        assert(delete_object(&port_oid[i]) == CRUD_STATUS_SUCCESS);
+        printf("Removed port %02d, OID: %08X\n", i, port_oid[i]);
+    }
+    // invalid remove
+    assert(delete_object(&port_oid[33]) != CRUD_STATUS_SUCCESS);
+    // invalid create (out-of-range)
+    //attr_list[1].id = CRUD_PORT_ATTR_SPEED;
+    attr_list[1].value.u32 = 2000;
+    port_oid[0] = 0;
+    assert(create_object(&attr_list, 4, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    //attr_list[2].id = CRUD_PORT_ATTR_IPV4;
+    attr_list[2].value.ip4 = 0;
+    assert(create_object(&attr_list, 4, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    //attr_list[2].id = CRUD_PORT_ATTR_IPV4;
+    attr_list[2].value.ip4 = 0xFFFFFFFF;
+    assert(create_object(&attr_list, 4, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    //attr_list[2].id = CRUD_PORT_ATTR_IPV4;
+    attr_list[2].value.ip4 = 0xEF010101;
+    assert(create_object(&attr_list, 4, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    //attr_list[2].id = CRUD_PORT_ATTR_IPV4;
+    attr_list[2].value.ip4 = 0xE0000000;
+    assert(create_object(&attr_list, 4, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    //attr_list[3].id = CRUD_PORT_ATTR_MTU;
+    attr_list[3].value.u32 = 32;
+    assert(create_object(&attr_list, 4, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    //attr_list[3].id = CRUD_PORT_ATTR_MTU;
+    attr_list[3].value.u32 = 2000;
+    assert(create_object(&attr_list, 4, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    // same attribute twice
+    attr_list[0].id = CRUD_PORT_ATTR_STATE;
+    attr_list[0].value.booldata = true;
+    attr_list[1].id = CRUD_PORT_ATTR_SPEED;
+    attr_list[1].value.u32 = 1000;
+    attr_list[2].id = CRUD_PORT_ATTR_IPV4;
+    attr_list[2].value.ip4 = 0x11223344;
+    attr_list[3].id = CRUD_PORT_ATTR_IPV4;
+    attr_list[3].value.ip4 = 0x11223344;
+    assert(create_object(&attr_list, 4, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    // no attr or NULLs
+    assert(create_object(&attr_list, 0, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    assert(create_object(NULL, 2, &port_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(port_oid[0] == 0);
+    assert(create_object(&attr_list, 3, NULL) != CRUD_STATUS_SUCCESS);
+#else
+    crud_attribute_t attr_list[10];
+    crud_object_id_t switch_oid[2] = {0};
+    attr_list[0].id = CRUD_SWITCH_ATTR_NAME;
+    attr_list[0].value.chardata = "This is my switch";
+    attr_list[1].id = CRUD_SWITCH_ATTR_HASH_SEED;
+    attr_list[1].value.u32 = 1000;
+    attr_list[2].id = CRUD_SWITCH_ATTR_SPLIT_MODE;
+    attr_list[2].value.u32 = 0;
+    attr_list[3].id = CRUD_SWITCH_ATTR_MAX_PORTS;
+    attr_list[3].value.u32 = 1;
+    // valid create
+    assert(create_object(&attr_list, 4, &switch_oid[0]) == CRUD_STATUS_SUCCESS);
+    assert(((uint32_t) switch_oid[0]) >> 16 == CRUD_OBJECT_TYPE_SWITCH);
+    printf("Created switch %02d, OID: %08X\n", i, switch_oid[0]);
+    // invalid create #2
+    switch_oid[1] = 0;
+    assert(create_object(&attr_list, 4, &switch_oid[1]) != CRUD_STATUS_SUCCESS);
+    assert(switch_oid[1]) == 0);
+    assert(delete_object(&switch_oid[0]) == CRUD_STATUS_SUCCESS);
+    printf("Removed sw %02d, OID: %08X\n", i, switch_oid[0]);
+    // partial create
+    assert(create_object(&attr_list, 2, &switch_oid[0]) == CRUD_STATUS_SUCCESS);
+    assert(((uint32_t) switch_oid[0]) >> 16 == CRUD_OBJECT_TYPE_SWITCH);
+    printf("Created switch %02d, OID: %08X\n", i, switch_oid[0]);
+    assert(delete_object(&switch_oid[0]) == CRUD_STATUS_SUCCESS);
+    printf("Removed sw %02d, OID: %08X\n", i, switch_oid[0]);
+    // invalid remove
+    assert(delete_object(&switch_oid[1]) != CRUD_STATUS_SUCCESS);
+    // invalid create (out-of-range)
+    attr_list[2].id = CRUD_SWITCH_ATTR_SPLIT_MODE;
+    attr_list[2].value.u32 = 4;
+    assert(create_object(&attr_list, 4, &switch_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(switch_oid[0]) == 0);
+
+    attr_list[3].id = CRUD_SWITCH_ATTR_MAX_PORTS;
+    attr_list[3].value.u32 = 0;
+    assert(create_object(&attr_list, 4, &switch_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(switch_oid[0]) == 0);
+    attr_list[3].id = CRUD_SWITCH_ATTR_MAX_PORTS;
+    attr_list[3].value.u32 = 100;
+    assert(create_object(&attr_list, 4, &switch_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(switch_oid[0]) == 0);
+    // same attribute twice
+    attr_list[0].id = CRUD_SWITCH_ATTR_NAME;
+    attr_list[0].value.chardata = "This is my switch";
+    attr_list[1].id = CRUD_SWITCH_ATTR_HASH_SEED;
+    attr_list[1].value.u32 = 1000;
+    attr_list[2].id = CRUD_SWITCH_ATTR_SPLIT_MODE;
+    attr_list[2].value.u32 = 0;
+    attr_list[3].id = CRUD_SWITCH_ATTR_SPLIT_MODE;
+    attr_list[3].value.u32 = 1;
+    assert(create_object(&attr_list, 4, &switch_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(switch_oid[0]) == 0);
+    // no attr or NULLs
+    assert(create_object(&attr_list, 0, &switch_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(switch_oid[0]) == 0);
+    assert(create_object(NULL, 2, &switch_oid[0]) != CRUD_STATUS_SUCCESS);
+    assert(switch_oid[0]) == 0);
+    assert(create_object(&attr_list, 3, NULL) != CRUD_STATUS_SUCCESS);
+#endif
+    return 0;
+}
+
+/*
 int main()
 {
     crud_object_id_t object_id_1 = 0;
@@ -112,6 +257,7 @@ printf("read_object: Status == : %u \n", buff);
 printf("####################################################\n");
 printf("\n\n\n\n");
 
-/**/
+/**
     return 0;
 }
+*/

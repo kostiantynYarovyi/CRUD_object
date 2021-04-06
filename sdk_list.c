@@ -11,10 +11,10 @@ struct lobject* create_list_port_object(){
         list_port_object->size = 0;
         list_port_object->head = 0;
         list_port_object->count_id = 0;
-        printf("sdk_list___create_list_port_object:  create object \n");
+        //printf("sdk_list___create_list_port_object:  create object \n");
         return list_port_object;
     }
-    printf("sdk_list___create_list_port_object: return 0 \n");
+    //printf("sdk_list___create_list_port_object: return 0 \n");
     return 0;
 }
 
@@ -24,10 +24,10 @@ struct lobject* create_list_swirch_object(){
         list_switch_object->size = 0;
         list_switch_object->head = 0;
         list_switch_object->count_id = 0;
-        printf("sdk_list___create_list_swirch_object:  create object \n");
+        //printf("sdk_list___create_list_swirch_object:  create object \n");
         return list_switch_object;
     }
-    printf("sdk_list___create_list_swirch_object: return 0 \n");
+    //printf("sdk_list___create_list_swirch_object: return 0 \n");
     return 0;
 }
  
@@ -44,7 +44,7 @@ struct lobject* get_list_switch_object(){
 
 uint32_t add_node(struct lobject* List, const uint16_t object_type, crud_attribute_t* listattribute, uint32_t attr_count){
     //printf("++++++++++++++++++++++++++++++++++++++++++++++++++\n");
-    printf("sdk_list___add_node\n");
+    //printf("sdk_list___add_node\n");
     uint32_t object_id = 0;
     struct lnode* node = (struct lnode*)malloc(sizeof(struct lnode));
 
@@ -61,11 +61,11 @@ uint32_t add_node(struct lobject* List, const uint16_t object_type, crud_attribu
 		List->head = node;
         List->size++;
         List->count_id++;
-		
+
         object_id = (object_type << 16) | node->object_id;
         return object_id;
     }
-    printf("sdk_list___add_node: fail !node\n");
+    //printf("sdk_list___add_node: fail !node\n");
     return 0;
 }
 
@@ -79,10 +79,10 @@ struct lnode* get_node(struct lobject* List, const crud_object_id_t object_id){
                 return current;
             current = current->next;
         }
-        printf("sdk_list___get_node: fail List out of range\n");
+        //printf("sdk_list___get_node: fail List out of range\n");
         return 0;
     }
-    printf("sdk_list___get_node: fail List is absetn\n");
+    //printf("sdk_list___get_node: fail List is absetn\n");
     return 0;
 }
 
@@ -91,13 +91,15 @@ crud_status_t delete_node(struct lobject* List, const crud_object_id_t object_id
         struct lnode* node;
         struct lnode* prev;
 
-        printf("sdk_list___delete_node: object_id =  %d \n", object_id);
+        //printf("sdk_list___delete_node: object_id =  %u \n", (object_id & 0xffff));
 
-        for (node = List->head; (node != 0 && node->object_id != object_id); node = node->next){
+        for (node = List->head; (node != 0 && node->object_id != (object_id & 0xffff)); node = node->next){
+            //printf("sdk_list___delete_node: node->object_id =  %u \n", node->object_id);
 		    prev = node;
 	    }
 
         if (node == 0){
+            //printf("sdk_list___delete_node:return CRUD_NODE_IS_ABSENT  \n");
 		    return CRUD_NODE_IS_ABSENT;
 	    }
         
@@ -110,11 +112,13 @@ crud_status_t delete_node(struct lobject* List, const crud_object_id_t object_id
             }
             free(node);
             List->size--;
-            return 0;
+           // printf("sdk_list___delete_node:return CRUD_STATUS_SUCCESS  \n");
+            return CRUD_STATUS_SUCCESS;
         }
+       // printf("sdk_list___delete_node:return CRUD_STATUS_FAILURE  \n");
         return CRUD_STATUS_FAILURE;
     }
-    printf("sdk_list___delete_node: fail List is absetn\n");
+   // printf("sdk_list___delete_node: fail List is absetn\n");
     return CRUD_LIST_IS_ABSENT;
 }
 
@@ -144,7 +148,7 @@ int get_attr_node_state(struct lnode* node){
 
 
 void add_new_attr(struct lnode* node,  crud_attribute_t attr){
-    printf("add_new_attr\n");
+   // printf("add_new_attr\n");
     node->listattribute[node->countAttr].id = attr.id;
     node->listattribute[node->countAttr].value = attr.value;
 }
