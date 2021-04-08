@@ -36,7 +36,7 @@ struct lobject* get_list_port_object();
 uint32_t get_list_size(struct lobject* List);
 
 
-uint32_t add_node(struct lobject* newList, const uint16_t object_type, crud_attribute_t* listattribute, uint32_t attr_count);
+crud_status_t add_node(struct lobject* newList, const uint16_t object_type, crud_attribute_t* listattribute, uint32_t attr_count, uint32_t* object_id);
 
 struct lnode* get_node(struct lobject* List, const crud_object_id_t object_id);
 

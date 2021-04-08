@@ -19,14 +19,17 @@ crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_ty
     bool Is_CRUD_PORT_ATTR_SPEED    = false;
     bool Is_CRUD_PORT_ATTR_IPV4     = false;
     bool Is_CRUD_PORT_ATTR_MTU      = false;
+
+
+
      for (uint32_t i = 0; i < attr_count; ++i){
         switch (attr_list[i].id)
         {
         case CRUD_PORT_ATTR_STATE:
-            //printf("crud_api____create_port_object_0:\n");
+        //    printf("crud_api____create_port_object_0:\n");
             if(Is_CRUD_PORT_ATTR_STATE)
             {
-                // printf("crud_api____create_port_object_0: return CRUD_ATTRIBUTE_REPEAT;\n");
+            //     printf("crud_api____create_port_object_0: return CRUD_ATTRIBUTE_REPEAT;\n");
                  return CRUD_ATTRIBUTE_REPEAT;
             }
                        
@@ -35,7 +38,7 @@ crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_ty
             break;
 
         case CRUD_PORT_ATTR_SPEED:
-          //printf("crud_api____create_port_object_1:\n");
+        //  printf("crud_api____create_port_object_1:\n");
             if(Is_CRUD_PORT_ATTR_SPEED)
                  return CRUD_ATTRIBUTE_REPEAT;        
           
@@ -47,13 +50,13 @@ crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_ty
             break;
 
         case CRUD_PORT_ATTR_IPV4:
-         // printf("crud_api____create_port_object_2:\n");
+          //printf("crud_api____create_port_object_2:\n");
             if(Is_CRUD_PORT_ATTR_IPV4)
                  return CRUD_ATTRIBUTE_REPEAT;
             Is_CRUD_PORT_ATTR_IPV4 = true;
           
             if (check_crud_port_attr_ipv4(attr_list[i].value)){
-                //printf("crud_api____create_port_object: CRUD_ATTRIBUTE_IPV4_MULTICAST\n");
+            //    printf("crud_api____create_port_object: CRUD_ATTRIBUTE_IPV4_MULTICAST\n");
                 return CRUD_ATTRIBUTE_IPV4_MULTICAST;
             }
             break;
@@ -65,7 +68,7 @@ crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_ty
             Is_CRUD_PORT_ATTR_MTU = true;
 
             if( check_crud_port_attr_mtu(attr_list[i].value)){
-                //printf("crud_api____create_port_object: CRUD_ATTRIBUTE_MTU_INCORRECT\n");
+            //    printf("crud_api____create_port_object: CRUD_ATTRIBUTE_MTU_INCORRECT\n");
                 return CRUD_ATTRIBUTE_MTU_INCORRECT;
             }
             break;
@@ -76,12 +79,13 @@ crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_ty
     struct lobject* object_list = get_list_port_object();
 
     if (object_list == 0){
+        //printf("crud_api____create_port_object: ============\n");
         object_list = create_list_port_object();
     }
 
-    *object_id = add_node(object_list, object_type, attr_list, attr_count);
+    return add_node(object_list, object_type, attr_list, attr_count, object_id);
+    //printf("object_id %u \n", *object_id);
 
-    return 0;
     //printf("-------------------------------------------\n");
 }
 
@@ -91,7 +95,8 @@ crud_status_t create_switch_object(crud_attribute_t* attr_list,  uint16_t object
 
 
 crud_status_t read_port_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count){
-  //  printf("crud_api____read_port_object:\n");
+    printf("crud_api____read_port_object:\n");
+    printf("read_object: object_id  %u \n", *object_id);
     struct lnode*  node =  get_node(get_list_port_object(), *object_id);
     uint32_t attr_id = -1;
 
@@ -99,46 +104,48 @@ crud_status_t read_port_object(crud_object_id_t* object_id, crud_attribute_t* at
         switch (attr_list[i].id)
         {
         case CRUD_PORT_ATTR_STATE:
-            //printf("crud_api____read_port_object_0:\n");
-            if(get_attr_node(node, attr_list[i].id, &attr_id) == true) 
-                attr_list[i].value.booldata = node->listattribute[attr_id].value.booldata;
+            //
+           // if(get_attr_node(node, attr_list[i].id, &attr_id) == true) {
+            //    printf("crud_api____read_port_object_0:\n");
+                attr_list[i].value.booldata = node->listattribute[i].value.booldata;
+            //    printf("List booldata %u \n", attr_list[i].value.booldata);
+            //    printf("Node booldata %u \n", node->listattribute[i].value.booldata);
+            //}
+                
             break;
 
         case CRUD_PORT_ATTR_SPEED:
-            //printf("crud_api____read_port_object_1:\n");
-            if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
-                if(check_crud_port_attr_speed(node->listattribute[attr_id].value)){
-                    //printf("crud_api____read_port_object_1: CRUD_ATTRIBUTE_SPEED_INCORRECT\n");
-                    return CRUD_ATTRIBUTE_SPEED_INCORRECT;
-                }
+            //
+           // if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
+            //    printf("crud_api____read_port_object_1:\n");
 
-                attr_list[i].value.u32 = node->listattribute[attr_id].value.u32;
-            }
+                attr_list[i].value.u32 = node->listattribute[i].value.u32;
+            //    printf("List u32 %u \n", attr_list[i].value.u32);
+            //    printf("Node u32 %u \n", node->listattribute[i].value.u32);
+            //}
             break;
 
         case CRUD_PORT_ATTR_IPV4:
-            //printf("crud_api____read_port_object_2:\n");
-            if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
-                if (check_crud_port_attr_ipv4(node->listattribute[attr_id].value)){
-                    //printf("crud_api____read_port_object: CRUD_ATTRIBUTE_IPV4_MULTICAST\n");
-                    return CRUD_ATTRIBUTE_IPV4_MULTICAST;
-                }
-
-                attr_list[i].value.ip4 = node->listattribute[attr_id].value.ip4;
-            }
+            //
+            //if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
+            //    printf("crud_api____read_port_object_2:\n");
+                attr_list[i].value.ip4 = node->listattribute[i].value.ip4;
+            //    printf("List ip4 %u \n", attr_list[i].value.ip4);
+            //    printf("Node ip4 %u \n", node->listattribute[i].value.ip4);
+                
+            //}
 
             break;
 
         case CRUD_PORT_ATTR_MTU:
-            //printf("crud_api____read_port_object_3:\n");
-            if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
-                if( check_crud_port_attr_mtu(node->listattribute[attr_id].value)){
-                    //printf("crud_api____read_port_object: CRUD_ATTRIBUTE_MTU_INCORRECT\n");
-                    return CRUD_ATTRIBUTE_MTU_INCORRECT;
-                }
-
-                attr_list[i].value.u32 = node->listattribute[attr_id].value.u32;
-            }
+            //
+            //if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
+            //    printf("crud_api____read_port_object_3:\n");
+                attr_list[i].value.u32 = node->listattribute[i].value.u32;
+            //    printf("List u32 %u \n", attr_list[i].value.u32);
+            //    printf("Node u32 %u \n", node->listattribute[i].value.u32);
+                
+            //}
             break;
         }
     }
