@@ -58,6 +58,7 @@ crud_status_t add_node(struct lobject* List, const uint16_t object_type, crud_at
             node->countAttr = attr_count;
             node->object_type = object_type;
             for(uint32_t i = 0; i < attr_count; ++i){
+                node->listattribute[i].id = listattribute[i].id;
                 node->listattribute[i].value = listattribute[i].value;
             }
             
@@ -167,8 +168,8 @@ uint32_t get_list_size(struct lobject* List){
 
 bool get_attr_node(struct lnode* node, const  uint32_t id, uint32_t* get_id){
     for(uint32_t i = 0; i < node->countAttr; i++){
-        //printf("get_attr_node: node->listattribute[i].id = %u \n", node->listattribute[i].id);
-        //printf("get_attr_node: id = %u \n", id);
+        printf("get_attr_node: node->listattribute[i].id = %u \n", node->listattribute[i].id);
+        printf("get_attr_node: id = %u \n", id);
         if(node->listattribute[i].id == id){
             *get_id = i;
             return true;

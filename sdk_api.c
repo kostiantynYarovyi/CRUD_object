@@ -79,7 +79,7 @@ crud_object_id_t check_invalid_type_object(crud_attribute_t* attr_list, uint32_t
 }
 
 crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, crud_object_id_t* object_id){
-    printf("===========================================\n");
+    //printf("===========================================\n");
     
     if(!object_id || !attr_list || attr_count < 0)
         return CRUD_INVALID_PARAM;
@@ -110,8 +110,8 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
     }
     if(type_object == 2){
         return create_port_object(attr_list, type_object, object_id, attr_count);
-        printf("create_object:Type is PORT; start creating: object=  %u \n", *object_id);
-        printf("===========================================\n");
+        //printf("create_object:Type is PORT; start creating: object=  %u \n", *object_id);
+        //printf("===========================================\n");
     }
     
     return CRUD_STATUS_FAILURE;

@@ -96,7 +96,7 @@ crud_status_t create_switch_object(crud_attribute_t* attr_list,  uint16_t object
 
 crud_status_t read_port_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count){
     printf("crud_api____read_port_object:\n");
-    printf("read_object: object_id  %u \n", *object_id);
+    //printf("read_object: object_id  %u \n", *object_id);
     struct lnode*  node =  get_node(get_list_port_object(), *object_id);
     uint32_t attr_id = -1;
 
@@ -164,14 +164,18 @@ crud_status_t update_port_object(crud_object_id_t* object_id, crud_attribute_t* 
         switch (attr_list[i].id)
         {
         case CRUD_PORT_ATTR_STATE:
-        //    printf("crud_api____update_port_object_0:\n");
+            printf("crud_api____update_port_object_0:\n");
 
-            if(get_attr_node(node, attr_list[i].id, &attr_id) == true)
+            if(get_attr_node(node, CRUD_PORT_ATTR_STATE, &attr_id) == true)
+            {
+                printf("crud_api____update_port_object_0: attr_id = %d  get_attr_node  TRUE\n", attr_id);
                 node->listattribute[attr_id].value.booldata = attr_list[i].value.booldata;
+            }
+            printf("\n\n\n");    
             break;
 
         case CRUD_PORT_ATTR_SPEED:
-            if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
+            if(get_attr_node(node, CRUD_PORT_ATTR_SPEED, &attr_id) == true){
                 if( check_crud_port_attr_speed(attr_list[i].value) ||
                     ((get_list_port_object()->state != -1 && !((bool)get_list_port_object()->state)) ||
                     (get_list_port_object()->state == -1 && get_crud_port_attr_state(attr_list, attr_count)))){
@@ -185,7 +189,7 @@ crud_status_t update_port_object(crud_object_id_t* object_id, crud_attribute_t* 
 
         case CRUD_PORT_ATTR_IPV4:
 
-            if(get_attr_node(node, attr_list[i].id, &attr_id) == true) {
+            if(get_attr_node(node, CRUD_PORT_ATTR_IPV4, &attr_id) == true) {
                 if (check_crud_port_attr_ipv4(attr_list[i].value)){
                     //printf("crud_api____update_port_object: CRUD_ATTRIBUTE_IPV4_MULTICAST\n");
                     return CRUD_ATTRIBUTE_IPV4_MULTICAST;

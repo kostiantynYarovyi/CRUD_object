@@ -132,15 +132,10 @@ int main(void)
     attr_list[3].id = CRUD_PORT_ATTR_MTU;
     attr_list[3].value.u32 = 100;
     
-    printf("sizeof(attr_list[0]) %lu \n", sizeof(attr_list[0])); 
-    printf("sizeof(attr_list) %lu \n", sizeof(attr_list)); 
-    printf("sizeof(crud_attr_id_t) %lu \n", sizeof(crud_attr_id_t));
-    printf("sizeof(crud_attr_value_t) %lu \n", sizeof(crud_attr_value_t));  
-   printf("#####################create_object######################\n");
-   printf("\n");
+
+
     assert(create_object(attr_list, 4, &port_oid[0]) == CRUD_STATUS_SUCCESS);
-   printf("\n");
-   printf("###########################################\n");
+
     
     attr_list[0].value.booldata = false;
     attr_list[1].value.u32 = 100;
@@ -192,13 +187,24 @@ int main(void)
     attr_list[1].value.u32 = 100;
     attr_list[2].id = CRUD_PORT_ATTR_IPV4;
     attr_list[2].value.ip4 = 0x55667788;
+    printf("##################### update_object    ######################\n");
+    printf("\n");
     assert(update_object(&port_oid[0], attr_list, 3) == CRUD_STATUS_SUCCESS);
-
+    
     attr_list[0].value.booldata = true;
     attr_list[1].value.u32 = 0;
     attr_list[2].value.ip4 = 0;
     attr_list[3].value.u32 = 0;
+    
+    printf("##################### create_object__1 ######################\n");
+    printf("\n");
     read_object(&port_oid[0], attr_list, 4);
+                printf("get_node: booldata %u \n",  attr_list[0].value.booldata);
+                printf("get_node: u32 %u \n",  attr_list[1].value.u32);
+                printf("get_node: ip4 %u \n",  attr_list[2].value.ip4);
+                printf("get_node: u32 %u \n",  attr_list[3].value.u32);
+    printf("\n");
+    printf("#####################create_object######################\n");
     assert(attr_list[0].value.booldata == false);
     assert(attr_list[1].value.u32 == 100);
     assert(attr_list[2].value.ip4 == 0x55667788);
@@ -225,7 +231,16 @@ int main(void)
 
     attr_list[0].id = CRUD_PORT_ATTR_SPEED;
     attr_list[0].value.u32 = 0;
+        
+    printf("##################### create_object__2 ######################\n");
+    printf("\n");
     assert(read_object(&port_oid[1], attr_list, 1) == CRUD_STATUS_SUCCESS);
+                printf("get_node: booldata %u \n",  attr_list[0].value.booldata);
+                printf("get_node: u32 %u \n",  attr_list[1].value.u32);
+                printf("get_node: ip4 %u \n",  attr_list[2].value.ip4);
+                printf("get_node: u32 %u \n",  attr_list[3].value.u32);
+    printf("\n");
+    printf("#####################create_object######################\n");
     assert(attr_list[0].value.u32 == 1000);
 
     attr_list[0].id = CRUD_PORT_ATTR_IPV4;
