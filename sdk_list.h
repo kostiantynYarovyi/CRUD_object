@@ -19,7 +19,7 @@ struct lobject {
     struct lnode *head;
     uint32_t size;
     uint32_t count_id;
-    int state;
+    //int state;
 };
 
 

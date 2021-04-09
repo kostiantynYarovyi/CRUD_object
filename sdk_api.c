@@ -123,7 +123,6 @@ crud_status_t read_object(crud_object_id_t *object_id, crud_attribute_t* attr_li
 
     if(attr_count == 0)
         return CRUD_ATTRIBUTE_LIST_IS_EMPTY;
-    printf("read_object: object_id  %u \n", *object_id);
     crud_object_id_t type_object = check_type_attribute_list(attr_list, attr_count);
     if(type_object == 0){
        // printf("sdk_api_create_object: CRUD_INVALID_PARAM \n");
