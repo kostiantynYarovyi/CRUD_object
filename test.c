@@ -130,7 +130,7 @@ int main(void)
     attr_list[2].value.ip4 = 0x11223344;
     attr_list[3].id = CRUD_PORT_ATTR_MTU;
     attr_list[3].value.u32 = 100;
-    printf("##################### read_object port_oid[0] #############################\n");
+    printf("##################### create_object port_oid[0] #############################\n");
     printf("\n\n\n\n");
     assert(create_object(attr_list, 4, &port_oid[0]) == CRUD_STATUS_SUCCESS);
     printf("\n\n\n\n");
