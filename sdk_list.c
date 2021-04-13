@@ -71,13 +71,13 @@ crud_status_t add_node(struct lobject* List, const uint16_t object_type, crud_at
             List->count_id++;
 
             *object_id = (object_type << 16) | node->object_id;
-            printf("\n\nadd_node:  node->object_id %u \n",   node->object_id);
-            printf("add_node: object_id %u \n\n\n",   *object_id);
+            printf("\n\nadd_node:   node->object_id %u \n",   node->object_id);
+            printf("add_node:       object_id       %u \n\n\n",   *object_id);
 
-            printf("add_node: booldata %u \n",  node->listattribute[0].value.booldata);
-            printf("add_node: u32 %u \n",  node->listattribute[1].value.u32);
-            printf("add_node: ip4 %u \n",  node->listattribute[2].value.ip4);
-            printf("add_node: u32 %u \n",  node->listattribute[3].value.u32);
+            printf("add_node: booldata  %u \n",  node->listattribute[0].value.booldata);
+            printf("add_node: u32       %u \n",  node->listattribute[1].value.u32);
+            printf("add_node: ip4       %u \n",  node->listattribute[2].value.ip4);
+            printf("add_node: u32       %u \n",  node->listattribute[3].value.u32);
             
             printf("\n add_node |||||||||||||||||: id  %p \n\n", node->listattribute);
             

@@ -120,7 +120,7 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
     }
     if(type_object == 2){
        
-        printf("create_object:Type is PORT; start creating: object=  %u \n", *object_id);
+        printf("create_object:Type is PORT; start creating:");
         printf("===========================================\n");
         return create_port_object(attr_list, type_object, object_id, attr_count);
     }
@@ -129,25 +129,38 @@ crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, cr
 }
 
 crud_status_t read_object(crud_object_id_t *object_id, crud_attribute_t* attr_list, uint32_t attr_count){
+    printf("\n\n =================== read_object %u ========================\n\n\n", *object_id);
+    
     if(!object_id || !attr_list || attr_count < 0)
+    {
+        printf("sdk_api_create_object: CRUD_INVALID_PARAM \n");
         return CRUD_INVALID_PARAM;
+    }
+        
 
     if(attr_count == 0)
+    {
+        printf("sdk_api_create_object: CRUD_ATTRIBUTE_LIST_IS_EMPTY \n");
         return CRUD_ATTRIBUTE_LIST_IS_EMPTY;
+    }
+        
     crud_object_id_t type_object = check_type_attribute_list(attr_list, attr_count);
     if(type_object == 0){
-       // printf("sdk_api_create_object: CRUD_INVALID_PARAM \n");
+        printf("sdk_api_create_object: CRUD_INVALID_PARAM \n");
         return CRUD_INVALID_PARAM;
     }
 
     if(type_object == 1){    
+        printf("sdk_api_create_object: type_object == 1\n");
         return read_switch_object(object_id, attr_list, attr_count);
     }
 
     if(type_object == 2){
+        printf("sdk_api_create_object:type_object == 2\n");
         return read_port_object(object_id, attr_list, attr_count);
     }
-
+    printf("sdk_api_create_object: CRUD_STATUS_FAILURE \n");
+    printf("\n\n =================== +++++++++++ ========================\n\n\n", *object_id);
     return CRUD_STATUS_FAILURE;
 }
 

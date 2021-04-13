@@ -103,7 +103,8 @@ crud_status_t create_switch_object(crud_attribute_t* attr_list,  uint16_t object
 
 
 crud_status_t read_port_object(crud_object_id_t* object_id, crud_attribute_t* attr_list, uint32_t attr_count){
-    //printf("read_object: object_id  %u \n", *object_id);
+    printf("\n------------------read_object: object_id  %u -------------------------\n", *object_id);
+    
     struct lnode*  node =  get_node(get_list_port_object(), *object_id);
     uint32_t attr_id = -1;
 
@@ -111,49 +112,49 @@ crud_status_t read_port_object(crud_object_id_t* object_id, crud_attribute_t* at
         switch (attr_list[i].id)
         {
         case CRUD_PORT_ATTR_STATE:
-            //
+            printf("crud_api____read_port_object_0:\n");
            if(get_attr_node(node, attr_list[i].id, &attr_id) == true) {
-            //    printf("crud_api____read_port_object_0:\n");
+            //    ;
                 attr_list[i].value.booldata = node->listattribute[attr_id].value.booldata;
-            //    printf("List booldata %u \n", attr_list[i].value.booldata);
-            //    printf("Node booldata %u \n", node->listattribute[i].value.booldata);
+                printf("List_STATE booldata %u \n", attr_list[i].value.booldata);
+                printf("Node_STATE booldata %u \n", node->listattribute[attr_id].value.booldata);
             }
                 
             break;
 
         case CRUD_PORT_ATTR_SPEED:
-            //
+            printf("crud_api____read_port_object_1:\n");
            if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
-            //    printf("crud_api____read_port_object_1:\n");
+            //    ;
 
                 attr_list[i].value.u32 = node->listattribute[attr_id].value.u32;
-            //    printf("List u32 %u \n", attr_list[i].value.u32);
-            //    printf("Node u32 %u \n", node->listattribute[i].value.u32);
+                printf("List_SPEED u32 %u \n", attr_list[i].value.u32);
+                printf("Node_SPEED u32 %u \n", node->listattribute[attr_id].value.u32);
             }
             break;
 
         case CRUD_PORT_ATTR_IPV4:
-            //
+            printf("crud_api____read_port_object_2:\n");
             if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
-            //    printf("crud_api____read_port_object_2:\n");
+            //    
                 attr_list[i].value.ip4 = node->listattribute[attr_id].value.ip4;
-            //    printf("List ip4 %u \n", attr_list[i].value.ip4);
-            //    printf("Node ip4 %u \n", node->listattribute[i].value.ip4);
-                
+                printf("List_IPV4 ip4 %u \n", attr_list[i].value.ip4);
+                printf("Node_IPV4 ip4 %u \n", node->listattribute[attr_id].value.ip4);     
             }
 
             break;
 
         case CRUD_PORT_ATTR_MTU:
-            //
+            printf("crud_api____read_port_object_3:\n");
             if(get_attr_node(node, attr_list[i].id, &attr_id) == true){
-                //printf("crud_api____read_port_object_3:\n");
-                attr_list[i].value.u32 = node->listattribute[attr_id].value.u32;
-                
+                printf("List_IPV4 ip4 %u \n", attr_list[i].value.ip4);
+                printf("Node_IPV4 ip4 %u \n", node->listattribute[attr_id].value.ip4);
+                attr_list[i].value.u32 = node->listattribute[attr_id].value.u32;     
             }
             break;
         }
     }
+    printf("\n------------------ +++++++++++ -------------------------\n");
     return 0;
 }
 

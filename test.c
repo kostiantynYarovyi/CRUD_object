@@ -162,7 +162,7 @@ printf("##################### read_object port_oid[0] ##########################
     assert(attr_list[3].value.u32 == 100);
     printf("\n\n\n\n");
 printf("##################################################\n");
-
+/*
     read_object(&port_oid[1], attr_list, 4);
     assert(attr_list[0].value.booldata == false);
     assert(attr_list[1].value.u32 == 100);
@@ -237,7 +237,7 @@ printf("##################################################\n");
     assert(attr_list[1].value.u32 == 100);
     assert(attr_list[2].value.ip4 == 0x55667788);
     assert(attr_list[3].value.u32 == 100);
-
+*/
 #else
 
     crud_attribute_t attr_list[10];
