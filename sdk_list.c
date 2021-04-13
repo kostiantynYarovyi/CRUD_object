@@ -11,10 +11,10 @@ struct lobject* create_list_port_object(){
         list_port_object->size = 0;
         list_port_object->head = 0;
         list_port_object->count_id = 0;
-        //printf("sdk_list___create_list_port_object:  create object \n");
+        printf("sdk_list___create_list_port_object:  create object \n");
         return list_port_object;
     }
-    //printf("sdk_list___create_list_port_object: return 0 \n");
+    printf("sdk_list___create_list_port_object: return 0 \n");
     return 0;
 }
 
@@ -43,17 +43,17 @@ struct lobject* get_list_switch_object(){
 }
 
 crud_status_t add_node(struct lobject* List, const uint16_t object_type, crud_attribute_t* listattribute, uint32_t attr_count, uint32_t* object_id){
-    //printf("++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+    printf("++++++++++++++++++++++++++++++++++++++++++++++++++\n");
     //printf("sdk_list___add_node\n");
     struct lnode* node = (struct lnode*)malloc(sizeof(struct lnode));
 
     if(node){
 
-        node->listattribute = (crud_attribute_t*)malloc(sizeof(crud_attribute_t)*attr_count);
+        node->listattribute = (crud_attribute_t*)malloc(sizeof(crud_attribute_t)*4);
 
         if(node->listattribute)
         { 
-            //printf("add_node: sizeof(listattribute) %lu \n",  sizeof(crud_attribute_t));
+            printf("add_node: sizeof(listattribute) %lu \n",  sizeof(crud_attribute_t));
             node->next = NULL;
             node->countAttr = attr_count;
             node->object_type = object_type;
@@ -71,7 +71,7 @@ crud_status_t add_node(struct lobject* List, const uint16_t object_type, crud_at
             List->count_id++;
 
             *object_id = (object_type << 16) | node->object_id;
-           /* printf("\n\nadd_node:  node->object_id %u \n",   node->object_id);
+            printf("\n\nadd_node:  node->object_id %u \n",   node->object_id);
             printf("add_node: object_id %u \n\n\n",   *object_id);
 
             printf("add_node: booldata %u \n",  node->listattribute[0].value.booldata);
@@ -80,13 +80,13 @@ crud_status_t add_node(struct lobject* List, const uint16_t object_type, crud_at
             printf("add_node: u32 %u \n",  node->listattribute[3].value.u32);
             
             printf("\n add_node |||||||||||||||||: id  %p \n\n", node->listattribute);
-            */
-        // printf("++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+            
+         printf("++++++++++++++++++++++++++++++++++++++++++++++++++\n");
             return 0;
         }   
     }
-    //printf("sdk_list___add_node: fail !node\n");
-    //printf("++++++++++++++++++return 0+++++++++++++++++++++++\n");
+    printf("sdk_list___add_node: CRUD_CREATE_OBJ_FAILED\n");
+    printf("++++++++++++++++++return 0+++++++++++++++++++++++\n");
     return CRUD_CREATE_OBJ_FAILED;
 }
 

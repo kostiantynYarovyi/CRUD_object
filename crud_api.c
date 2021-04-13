@@ -13,7 +13,7 @@ bool check_crud_port_attr_mtu(union _sai_attribute_value_t mtu);
 
 
 crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_type, crud_object_id_t* object_id, uint32_t attr_count){
-    //printf("-------------------------------------------\n");
+    printf("-------------------------------------------\n");
     //printf("crud_api____create_port_object:\n");
     bool Is_CRUD_PORT_ATTR_STATE    = false;
     bool Is_CRUD_PORT_ATTR_SPEED    = false;
@@ -29,8 +29,8 @@ crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_ty
         //    printf("crud_api____create_port_object_0:\n");
             if(Is_CRUD_PORT_ATTR_STATE)
             {
-            //     printf("crud_api____create_port_object_0: return CRUD_ATTRIBUTE_REPEAT;\n");
-                 return CRUD_ATTRIBUTE_REPEAT;
+                printf("crud_api____create_port_object_0: CRUD_ATTRIBUTE_REPEAT\n");
+                return CRUD_ATTRIBUTE_REPEAT;            
             }
                        
             Is_CRUD_PORT_ATTR_STATE = true;
@@ -40,11 +40,14 @@ crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_ty
         case CRUD_PORT_ATTR_SPEED:
         //  printf("crud_api____create_port_object_1:\n");
             if(Is_CRUD_PORT_ATTR_SPEED)
-                 return CRUD_ATTRIBUTE_REPEAT;        
+            {
+                printf("crud_api____create_port_object_1: CRUD_ATTRIBUTE_REPEAT\n");
+                return CRUD_ATTRIBUTE_REPEAT;
+            }      
           
             Is_CRUD_PORT_ATTR_SPEED = true;
             if(check_crud_port_attr_speed(attr_list[i].value)){
-            //    printf("crud_api____create_port_object_1: CRUD_ATTRIBUTE_SPEED_INCORRECT\n");
+                printf("crud_api____create_port_object_1: CRUD_ATTRIBUTE_SPEED_INCORRECT\n");
                 return CRUD_ATTRIBUTE_SPEED_INCORRECT;
             }
             break;
@@ -52,41 +55,46 @@ crud_status_t create_port_object(crud_attribute_t* attr_list, uint16_t object_ty
         case CRUD_PORT_ATTR_IPV4:
           //printf("crud_api____create_port_object_2:\n");
             if(Is_CRUD_PORT_ATTR_IPV4)
-                 return CRUD_ATTRIBUTE_REPEAT;
+            {
+                printf("crud_api____create_port_object_2: CRUD_ATTRIBUTE_REPEAT\n");
+                return CRUD_ATTRIBUTE_REPEAT;
+            }
             Is_CRUD_PORT_ATTR_IPV4 = true;
           
             if (check_crud_port_attr_ipv4(attr_list[i].value)){
-            //    printf("crud_api____create_port_object: CRUD_ATTRIBUTE_IPV4_MULTICAST\n");
+                printf("crud_api____create_port_object: CRUD_ATTRIBUTE_IPV4_MULTICAST\n");
                 return CRUD_ATTRIBUTE_IPV4_MULTICAST;
             }
             break;
 
         case CRUD_PORT_ATTR_MTU:
-            //  printf("crud_api____create_port_object_3:\n");
+            //  
             if(Is_CRUD_PORT_ATTR_MTU)
-                 return CRUD_ATTRIBUTE_REPEAT;
+            {
+                printf("crud_api____create_port_object_3: CRUD_ATTRIBUTE_REPEAT\n");
+                return CRUD_ATTRIBUTE_REPEAT;
+            }
+                
             Is_CRUD_PORT_ATTR_MTU = true;
 
             if( check_crud_port_attr_mtu(attr_list[i].value)){
-            //    printf("crud_api____create_port_object: CRUD_ATTRIBUTE_MTU_INCORRECT\n");
+                printf("crud_api____create_port_object: CRUD_ATTRIBUTE_MTU_INCORRECT\n");
                 return CRUD_ATTRIBUTE_MTU_INCORRECT;
             }
             break;
         }
     }
 
-   //printf("crud_api____create_port_object: ============\n");
+    printf("crud_api____create_port_object: ============\n");
     struct lobject* object_list = get_list_port_object();
 
     if (object_list == 0){
-        //printf("crud_api____create_port_object: ============\n");
+        printf("crud_api____create_port_object: ============\n");
         object_list = create_list_port_object();
     }
 
+    printf("-------------------------------------------\n");
     return add_node(object_list, object_type, attr_list, attr_count, object_id);
-    //printf("object_id %u \n", *object_id);
-
-    //printf("-------------------------------------------\n");
 }
 
 crud_status_t create_switch_object(crud_attribute_t* attr_list,  uint16_t object_type, crud_object_id_t* object_id, uint32_t attr_count){

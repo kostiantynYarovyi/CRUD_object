@@ -79,39 +79,50 @@ crud_object_id_t check_invalid_type_object(crud_attribute_t* attr_list, uint32_t
 }
 
 crud_status_t create_object(crud_attribute_t* attr_list, uint32_t attr_count, crud_object_id_t* object_id){
-    //printf("===========================================\n");
+    printf("===========================================\n");
     
     if(!object_id || !attr_list || attr_count < 0)
-        return CRUD_INVALID_PARAM;
+    {
+         printf("sdk_api___create_object: CRUD_INVALID_PARAM \n");
+         return CRUD_INVALID_PARAM;
+    }
+        
 
     if(attr_count == 0)
+    {
+        printf("sdk_api___create_object: CRUD_ATTRIBUTE_LIST_IS_EMPTY \n");
         return CRUD_ATTRIBUTE_LIST_IS_EMPTY;
+    }
+        
 
     if(get_list_port_object() && (get_list_size(get_list_port_object()) >= 32)){
-        //printf("sdk_api___create_object: CRUD_PORT_LIST_IS_FULL \n");
+        printf("sdk_api___create_object: CRUD_PORT_LIST_IS_FULL \n");
         return CRUD_PORT_LIST_IS_FULL;
     }
-/*
+    printf("\n================= attr_list =========================\n");
     printf("booldata %u \n", attr_list[0].value.booldata);
     printf("u32 %u \n", attr_list[1].value.u32);
     printf("ip4 %u \n", attr_list[2].value.ip4);
     printf("u32 %u \n", attr_list[3].value.u32);
- */   
+    printf("\n================= attr_list ==========================\n");
+
 
     crud_object_id_t type_object = check_type_attribute_list(attr_list, attr_count);
     if(type_object == 0){
-       // printf("sdk_api___create_object: CRUD_INVALID_PARAM \n");
+        printf("sdk_api___create_object: CRUD_INVALID_PARAM \n");
         return CRUD_INVALID_PARAM;
     }
     if(type_object == 1){    
+        
+        printf("create_object:Type is SWITCH; start creating \n");
+        printf("===========================================\n");
         return create_switch_object(attr_list, type_object, object_id, attr_count);
-        //printf("create_object:Type is SWITCH; start creating \n");
-        //printf("===========================================\n");
     }
     if(type_object == 2){
+       
+        printf("create_object:Type is PORT; start creating: object=  %u \n", *object_id);
+        printf("===========================================\n");
         return create_port_object(attr_list, type_object, object_id, attr_count);
-        //printf("create_object:Type is PORT; start creating: object=  %u \n", *object_id);
-        //printf("===========================================\n");
     }
     
     return CRUD_STATUS_FAILURE;
